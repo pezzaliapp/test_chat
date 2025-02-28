@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat Flask-SocketIO</title>
+    <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
+</head>
+<body>
+    <h1>Benvenuto nella Chat!</h1>
+
+    <input id="messageInput" type="text" placeholder="Scrivi un messaggio...">
+    <button onclick="sendMessage()">Invia</button>
+
+    <ul id="messages"></ul>
+
+    <script>
+        const socket = io();
+
+        socket.on('message', function(msg) {
+            console.log("Messaggio ricevuto:", msg);
+            const li = document.createElement("li");
+            li.textContent = msg;
+            document.getElementById("messages").appendChild(li);
+        });
+
+        function sendMessage() {
+            const input = document.getElementById("messageInput");
+            const msg = input.value;
+            console.log("Invio messaggio:", msg);
+            socket.emit('message', msg);
+            input.value = "";
+        }
+    </script>
+</body>
+</html>
