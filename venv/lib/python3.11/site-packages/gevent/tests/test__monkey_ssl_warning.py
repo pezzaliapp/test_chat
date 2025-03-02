@@ -11,7 +11,12 @@ class Test(unittest.TestCase):
         # Issue 1108: Python 2, importing pkg_resources,
         # as is done for namespace packages, imports ssl,
         # leading to an unwanted SSL warning.
-        __import__('pkg_resources')
+        # This is a deprecated API though.
+        with warnings.catch_warnings():
+            try:
+                __import__('pkg_resources')
+            except ImportError:
+                self.skipTest('Uses pkg_resources (setuptools) which is not installed')
 
         from gevent import monkey
 

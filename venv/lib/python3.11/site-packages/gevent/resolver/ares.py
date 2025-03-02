@@ -13,7 +13,6 @@ from _socket import EAI_NONAME
 
 from gevent._compat import text_type
 from gevent._compat import integer_types
-from gevent._compat import PY3
 
 from gevent.hub import Waiter
 from gevent.hub import get_hub
@@ -94,6 +93,8 @@ class Resolver(AbstractResolver):
 
     - ``getaddrinfo`` may return canonical names even without the ``AI_CANONNAME``
       being set.
+
+    - ``getaddrinfo`` does not appear to support IPv6 symbolic scope IDs.
 
     .. caution::
 
@@ -329,7 +330,7 @@ class Resolver(AbstractResolver):
         self.cares.getnameinfo(waiter, address, flags)
         node, service = waiter.get()
 
-        if service is None and PY3:
+        if service is None:
             # ares docs: "If the query did not complete
             # successfully, or one of the values was not
             # requested, node or service will be NULL ". Python 2

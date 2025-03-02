@@ -8,10 +8,10 @@ app.config['SECRET_KEY'] = 'questa_e_una_chiave_segreta'
 socketio = SocketIO(
     app,
     cors_allowed_origins="*",
-    async_mode="eventlet",  # ← usa eventlet
+    async_mode="eventlet",
     ping_interval=25,
     ping_timeout=60,
-    transports=["websocket"]  # se vuoi forzare solo WebSocket
+    transports=["websocket"]  # Forza solo WebSocket
 )
 
 @app.route('/')
