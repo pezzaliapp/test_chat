@@ -5,14 +5,13 @@ from flask_socketio import SocketIO, send
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'questa_e_una_chiave_segreta'
 
-# 🔹 Forza WebSocket e disabilita il polling
 socketio = SocketIO(
     app,
     cors_allowed_origins="*",
-    async_mode="gevent",
-    ping_interval=25,  # Ogni 25 secondi invia un ping
-    ping_timeout=60,  # Timeout se non riceve risposte per 60 secondi
-    transports=["websocket"]  # Usa solo WebSocket
+    async_mode="eventlet",  # ← usa eventlet
+    ping_interval=25,
+    ping_timeout=60,
+    transports=["websocket"]  # se vuoi forzare solo WebSocket
 )
 
 @app.route('/')
@@ -25,5 +24,5 @@ def handle_message(msg):
     send(msg, broadcast=True)
 
 if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 5000))  # Porta automatica per Render
-    socketio.run(app, host='0.0.0.0', port=port, debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    socketio.run(app, host='0.0.0.0', port=port)
