@@ -5,21 +5,8 @@ from flask_socketio import SocketIO, send
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'questa_e_una_chiave_segreta'
 
-# 🔹 Se eventlet è disponibile, usalo; altrimenti prova gevent, altrimenti usa threading
-async_modes = ["eventlet", "gevent", "threading"]
-async_mode = None
-
-for mode in async_modes:
-    try:
-        socketio = SocketIO(app, cors_allowed_origins="*", async_mode=mode)
-        async_mode = mode
-        print(f"✅ Async mode impostato su: {async_mode}")
-        break
-    except ImportError:
-        continue
-
-if async_mode is None:
-    raise RuntimeError("❌ Nessuna modalità async disponibile!")
+# ✅ Usa Eventlet per supportare WebSocket
+socketio = SocketIO(app, cors_allowed_origins="*", async_mode="eventlet")
 
 @app.route('/')
 def index():
