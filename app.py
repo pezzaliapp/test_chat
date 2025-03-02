@@ -11,7 +11,7 @@ socketio = SocketIO(
     async_mode="eventlet",
     ping_interval=25,
     ping_timeout=60,
-    transports=["websocket"]  # Forza solo WebSocket
+    transports=["websocket"]  # Solo WebSocket (opzionale)
 )
 
 @app.route('/')
