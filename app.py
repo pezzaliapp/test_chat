@@ -5,11 +5,10 @@ from flask_socketio import SocketIO, send
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'questa_e_una_chiave_segreta'
 
-# 🔹 Configura Flask-SocketIO con Gevent
+# 🔹 Lasciamo Flask-SocketIO scegliere automaticamente async_mode
 socketio = SocketIO(
     app,
     cors_allowed_origins="*",
-    async_mode="gevent",
     ping_interval=25,
     ping_timeout=60
 )
