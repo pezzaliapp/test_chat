@@ -6,7 +6,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'questa_e_una_chiave_segreta'
 
 # Usa gevent come modalità asincrona
-socketio = SocketIO(app, cors_allowed_origins="*", async_mode="gevent", logger=True, engineio_logger=True)
+socketio = SocketIO(app, cors_allowed_origins="*", async_mode="gevent", ping_interval=25, ping_timeout=60)
 
 @app.route('/')
 def index():
