@@ -14,10 +14,22 @@
     <ul id="messages"></ul>
 
     <script>
-        const socket = io();
+        // 🔹 Forza solo WebSocket per evitare errori di trasporto
+        const socket = io({
+            transports: ["websocket"], // Usa SOLO WebSocket
+            upgrade: false // Disabilita il polling
+        });
+
+        socket.on('connect', function() {
+            console.log("✅ Connessione WebSocket stabilita.");
+        });
+
+        socket.on('disconnect', function() {
+            console.warn("⚠️ Disconnesso dal server.");
+        });
 
         socket.on('message', function(msg) {
-            console.log("Messaggio ricevuto:", msg);
+            console.log("📩 Messaggio ricevuto:", msg);
             const li = document.createElement("li");
             li.textContent = msg;
             document.getElementById("messages").appendChild(li);
@@ -25,10 +37,12 @@
 
         function sendMessage() {
             const input = document.getElementById("messageInput");
-            const msg = input.value;
-            console.log("Invio messaggio:", msg);
-            socket.emit('message', msg);
-            input.value = "";
+            const msg = input.value.trim();
+            if (msg !== "") {
+                console.log("📤 Invio messaggio:", msg);
+                socket.emit('message', msg);
+                input.value = "";
+            }
         }
     </script>
 </body>
