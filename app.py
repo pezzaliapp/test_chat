@@ -5,8 +5,7 @@ from flask_socketio import SocketIO, send
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'questa_e_una_chiave_segreta'
 
-# Usa eventlet per il supporto WebSocket
-socketio = SocketIO(app, cors_allowed_origins="*", async_mode="eventlet")
+socketio = SocketIO(app, cors_allowed_origins="*", async_mode="threading")  # Usa "threading" invece di eventlet/gevent
 
 @app.route('/')
 def index():
@@ -19,4 +18,5 @@ def handle_message(msg):
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
-    socketio.run(app, host='0.0.0.0', port=port, debug=True)
+    from waitress import serve
+    serve(app, host="0.0.0.0", port=port)
