@@ -12,7 +12,7 @@
     <ul id="messages"></ul>
 
     <script>
-        // Lascio che Socket.IO negozi i trasporti
+        // Lascio che Socket.IO negozi automaticamente il miglior trasporto
         const socket = io();
 
         socket.on('connect', function() {
@@ -34,6 +34,7 @@
             const input = document.getElementById("messageInput");
             const msg = input.value.trim();
             if (msg !== "") {
+                console.log("📤 Invio messaggio:", msg);
                 socket.emit('message', msg);
                 input.value = "";
             }
