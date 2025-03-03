@@ -26,4 +26,4 @@ def handle_message(msg):
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 10000))  # Assicurati che Render usi la porta corretta
-    socketio.run(app, host='0.0.0.0', port=port, debug=True)
+    socketio = SocketIO(app, cors_allowed_origins="*", async_mode="eventlet")
