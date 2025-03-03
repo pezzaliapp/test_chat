@@ -7,21 +7,16 @@
 </head>
 <body>
     <h1>Benvenuto nella Chat!</h1>
-
     <input id="messageInput" type="text" placeholder="Scrivi un messaggio...">
     <button onclick="sendMessage()">Invia</button>
-
     <ul id="messages"></ul>
 
     <script>
-        // 🔹 Forza solo WebSocket per evitare errori di trasporto
-        const socket = io({
-            transports: ["websocket"], // Usa SOLO WebSocket
-            upgrade: false // Disabilita il polling
-        });
+        // Lascio che Socket.IO negozi i trasporti
+        const socket = io();
 
         socket.on('connect', function() {
-            console.log("✅ Connessione WebSocket stabilita.");
+            console.log("✅ Connesso al server Socket.IO.");
         });
 
         socket.on('disconnect', function() {
@@ -39,7 +34,6 @@
             const input = document.getElementById("messageInput");
             const msg = input.value.trim();
             if (msg !== "") {
-                console.log("📤 Invio messaggio:", msg);
                 socket.emit('message', msg);
                 input.value = "";
             }

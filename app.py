@@ -5,14 +5,13 @@ from flask_socketio import SocketIO, send
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'questa_e_una_chiave_segreta'
 
-# Forza WebSocket e disabilita il polling
+# Inizializza UNA SOLA VOLTA
 socketio = SocketIO(
     app,
     cors_allowed_origins="*",
-    async_mode=None,  # Auto-rileva il miglior backend
+    async_mode="gevent",  # coerente con gevent
     ping_interval=25,
-    ping_timeout=60,
-    transports=["websocket"]  # SOLO WebSocket
+    ping_timeout=60
 )
 
 @app.route('/')
@@ -24,6 +23,5 @@ def handle_message(msg):
     print(f"Messaggio ricevuto: {msg}")
     send(msg, broadcast=True)
 
-if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 10000))  # Assicurati che Render usi la porta corretta
-    socketio = SocketIO(app, cors_allowed_origins="*", async_mode="eventlet")
+# NIENTE blocco if __name__ == '__main__'
+# Gunicorn userà `app:app`
